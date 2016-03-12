@@ -1,0 +1,87 @@
+\documentclass[a4paper,11pt]{proposal}
+\usepackage{times}  %% This makes the body base font times...
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage[olditem]{paralist}
+\usepackage{epsfig}
+
+
+\setlength{\headheight}{14pt} %Fixes headheight warning
+\widowpenalty=1000
+\clubpenalty=1000
+
+
+
+% Put in your details here
+\title{Applying Statistical Language Modeling to Genetic Programming}
+\crest{\includegraphics[width=40mm]{crest.pdf}}
+\author{H. Chase Stevens}
+\studentnumber{s1107496}
+% For IRR
+\collegeordept{School of Informatics}
+% For IRP
+\collegeordept{Supervisor: Dr. I. Stark}
+
+
+\university{University of Edinburgh}
+
+% For IRR
+%\degree{Informatics Research Review}
+% For IRP
+\degree{M.Sc. Project Proposal}
+
+
+\degreedate{April 2016} 
+
+
+
+\begin{document}
+\maketitle 
+\parindent=0mm
+
+
+\pagenumbering{roman}
+\setcounter{tocdepth}{2}
+
+\clearpage
+
+\newpage
+
+\pagenumbering{arabic}
+
+\setlength{\parskip}{1ex} 
+
+
+\section{Introduction} \label{sec:intro}
+
+\section{Background and related work} \label{sec:back}
+
+\subsection{Application of language modeling to formal languages}
+
+\subsection{Genetic programming}
+
+\section{Methodology} \label{sec:disc}
+
+\subsection{Compilation of Python corpus}
+The creation of a language model for Python will require a large and representative corpus of Python source code. As I am not aware of such a corpus existing at this time, the first objective of this project will be to compile one. To do so, source code will be downloaded from publicly available, open source repositories hosted on GitHub. 
+
+Ideally, the Python corpus compiled for this project will consist of idiomatic, useful, and well-written Python source code; for this project, good-quality code is of special importance, as inexecutable code may still be syntactically valid and parsable. In compiling a similar corpus for the Java programming language, Allamanis and Sutton \cite{allamanis2013} sought to maintain a minimum level of quality in the GitHub repositories used by filtering out those that had not been forked at least once; in this project, for which I am planning to create a smaller corpus, repositories will instead be used if they exceed some minimum number of stars or forks. To find repositories matching these criteria, the GitHub search API will be used, which allows filtering on not only number of stars and forks but also on project language.
+
+\subsection{Creation of language model from Python corpus}
+
+\subsection{Application of language model to genetic programming system}
+
+\section{Evaluation}
+
+\section{Timeline}
+
+\section{Conclusions}
+
+\newpage
+\bibliographystyle{IEEEtran}
+\bibliography{irr_irp}
+\end{document}
