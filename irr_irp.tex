@@ -67,15 +67,25 @@
 \section{Methodology} \label{sec:disc}
 
 \subsection{Compilation of Python corpus}
-The creation of a language model for Python will require a large and representative corpus of Python source code. As I am not aware of such a corpus existing at this time, the first objective of this project will be to compile one. To do so, source code will be downloaded from publicly available, open source repositories hosted on GitHub. 
+The creation of a language model for Python will require a large and representative corpus of Python source code. While previous work has employed small collections of hand-chosen open-source Python projects for use as a corpus \cite{tu2014} \cite{caliskan2015}, and other work has resulted in the compilation of large corpora for languages such as Java \cite{allamanis2013}, there does not appear to be a suitably large Python source code corpus publicly available for use in this project at present; ergo, the first objective of this project will be to compile one. To do so, source code will be downloaded from open-source projects hosted on the popular code repository host GitHub. 
 
 Ideally, the Python corpus compiled for this project will consist of idiomatic, useful, and well-written Python source code; for this project, good-quality code is of special importance, as inexecutable code may still be syntactically valid and parsable. In compiling a similar corpus for the Java programming language, Allamanis and Sutton \cite{allamanis2013} sought to maintain a minimum level of quality in the GitHub repositories used by filtering out those that had not been forked at least once; in this project, for which I am planning to create a smaller corpus, repositories will instead be used if they exceed some minimum number of stars or forks. To find repositories matching these criteria, the GitHub search API will be used, which allows filtering on not only number of stars and forks but also on project language.
 
 \subsection{Creation of language model from Python corpus}
 
+
+
+
 \subsection{Application of language model to genetic programming system}
 
 \section{Evaluation}
+
+In the literature, many genetic programming approaches are evaluated using grammars tailored to particular domains \cite{mcdermott2012}. However, in this project, by necessity, the genetic programming system to be developed will be operating on the general grammar of the Python programming language. Therefore, a suitable task will be one in which solutions lend themselves to representation and manipulation as Python ASTs.
+
+While, often, genetic programming is used to generate code from scratch, recent work has successfully applied genetic programming to the automated repair of pre-existing programs \cite{weimer2009}. As in this case manipulation is done on the program's AST, this task would be an ideal evaluative measure for the proposed genetic programming system. Although prior work in this domain has been evaluated on snapshots of open source software during instances in which the software failed to pass a suite of automated tests, given the scope of this project, evaluation will instead either be performed on test-compliant software which has had bugs deliberately introduced through random AST mutation, or on hand-written examples, dependent on the feasibility of the former given the project's time constraints.
+
+The primary means of evaluating the proposed genetic programming system will be demonstrating how many (if any) software repair tasks it is able to solve. Time permitting, the system's performance, both in terms of number of solutions found and speed with which solutions are identified, will be compared against a baseline genetic programming system which does not incorporate an initial language model as induced using the Python corpus.
+
 
 \section{Timeline}
 
