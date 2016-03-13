@@ -8,6 +8,7 @@
 \usepackage{textcomp}
 \usepackage[olditem]{paralist}
 \usepackage{epsfig}
+\usepackage{qtree}
 
 
 \setlength{\headheight}{14pt} %Fixes headheight warning
@@ -74,9 +75,17 @@ Ideally, the Python corpus compiled for this project will consist of idiomatic, 
 \subsection{Creation of language model from Python corpus}
 
 
+\begin{figure}
+\qtreecenterfalse
+\hskip 0.5in \Tree [.Call [.(func) [.Name ``\texttt{map}" ] ] [.(args) [.Name ``\texttt{len}" ] [.List [.List [.Num \texttt{1} ] [.Num \texttt{2} ]]]]]
+\hskip 0.25in \Tree [.Call [.(func) [.Name ``\texttt{map}" ] ] [.(args) [.Name ``\texttt{len}" ] [.List [.Num \texttt{1} ] [.Num \texttt{2} ]]]]
+
+\caption{Comparison of the respective Python AST representations of the semantically valid expression ``\texttt{map(len, [[1, 2]])}" (left) and the invalid expression ``\texttt{map(len, [1, 2])}" (right). Note that in both cases the direct descendant node types of ``Call" (i.e. Name, Name, and List) are identical.}
+\end{figure}
 
 
 \subsection{Application of language model to genetic programming system}
+
 
 \section{Evaluation}
 
