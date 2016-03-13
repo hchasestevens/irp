@@ -74,13 +74,19 @@ Ideally, the Python corpus compiled for this project will consist of idiomatic, 
 
 \subsection{Creation of language model from Python corpus}
 
+While much work has been done on modeling programming languages through the use of n-gram models (e.g. \cite{hindle2012}, \cite{allamanis2013}), genetic programming is most naturally applied to tree-like structures as opposed to sequences, and, as such, the language model constructed for this project will be a probabilistic grammar over Python's Abstract Syntax Tree (AST).
+
+When considered as sequences of tokens, programming languages are purported to contain less information per token than natural languages \cite{hindle2012}. For example, under a trigram model, Java source code has an estimated average per-token cross-entropy of 4.9 bits \cite{allamanis2013}, compared to an estimated cross-entropy value of nearly 8 bits per word in English \cite{brown1992}. However, despite this,  an individual node in an AST can provide relatively little semantic information or information about non-children descendant nodes within the tree, easily allowing for the generation of unrunnable programs. Consider the example presented in \autoref{fig:1}, from which it can be clearly seen that a Call node in Python's AST contains no information about e.g. the types of the arguments with which the specified function is to be called. In order to combat this problem and encourage the generation of valid Python code, I plan to annotate AST nodes with variables learned through expectation maximization (EM), an unsupervised technique which has been shown to reduce perplexity measurements of probabilistic grammars over natural languages without the need for careful manual feature selection \cite{matsuzaki2005} \cite{petrov2006}.
+
+Since EM as an optimization technique is not guaranteed to converge on a global optimum and relies on randomized initializations which have demonstrable effects on the quality of the final grammar obtained \cite{matsuzaki2005}, I plan to generate several candidate probabilistic grammars using EM, as well as probabilistic grammar without annotations for comparison. Considering that cursory initial investigation suggests that several thousand Python projects on GitHub will meet the proposed criteria for inclusion in the aforementioned source code corpus, generating these language models might prove to be quite computationally intensive. Ideally, I would like to make use of a Hadoop cluster to distribute and parallelize the creation of each language model, thereby reducing overall time spent in model creation. Failing this, an alternative would be to sample a small subset of the corpus for use in training the language models, however, as corpus size has been shown to greatly impact language model efficacy \citep{allamanis2013}, I would be reticent to pursue this course of action.
 
 \begin{figure}
 \qtreecenterfalse
-\hskip 0.5in \Tree [.Call [.(func) [.Name ``\texttt{map}" ] ] [.(args) [.Name ``\texttt{len}" ] [.List [.List [.Num \texttt{1} ] [.Num \texttt{2} ]]]]]
+\hskip 0.5in \Tree [.Call [.(func) [.Name ``\texttt{map}" ] ] [.(args) [.Name ``\texttt{len}" ] [.List [.Str ``\texttt{a}" ] [.Str ``\texttt{bc}" ]]]]
 \hskip 0.25in \Tree [.Call [.(func) [.Name ``\texttt{map}" ] ] [.(args) [.Name ``\texttt{len}" ] [.List [.Num \texttt{1} ] [.Num \texttt{2} ]]]]
 
-\caption{Comparison of the respective Python AST representations of the semantically valid expression ``\texttt{map(len, [[1, 2]])}" (left) and the invalid expression ``\texttt{map(len, [1, 2])}" (right). Note that in both cases the direct descendant node types of ``Call" (i.e. Name, Name, and List) are identical.}
+\caption{Comparison of the respective Python AST representations of the semantically valid expression ``\texttt{map(len, ['a', 'bc'])}" (left) and the invalid expression ``\texttt{map(len, [1, 2])}" (right). Note that across both cases the types of the direct descendant nodes of ``Call" (i.e. Name, Name, and List) are identical.}
+\label{fig:1}
 \end{figure}
 
 
