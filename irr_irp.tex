@@ -92,6 +92,12 @@ Since EM as an optimization technique is not guaranteed to converge on a global 
 
 \subsection{Application of language model to genetic programming system}
 
+The use of probabilistic grammars in genetic programming has been well established, with many variations having been presented in the literature \cite{shan2006}. The key difference between previous work and the system proposed here is that, while previous approaches have assumed initial uniform probability distributions over competing production rules which are then updated in accordance with the relative success of the solutions produced incorporating each production \cite{whigham1995} \cite{ratle2001} \cite{keber2002}, my system will use the aforementioned Python language model to supply initial probabilities, which will similarly be updated as appropriate to meritorious solutions identified for specific tasks. 
+
+The direction of genetic programming's search strategy is not alone sufficient to ensure solutions are found in reasonable time: a phenomenon known as ``bloat", in which solutions incorporate increasingly large portions of code which do not contribute to their fitness to the task at hand, can have serious deleterious effects on the run-time of the search, as each individual within the genetic programming population becomes more expensive to evaluate. To combat this, I plan to use the parsimony techniques introduced in Poli \cite{poli2003} and Poli \& McPhee \cite{poli2008}, which introduce pressures against excessive solution growth both during the fitness evaluation and individual selection phases of genetic programming.
+
+Another important consideration when allowing for the generation of arbitrary code is the safety with which such code can be run; code may exhibit side-effects that harm or render inoperable the underlying system on which it is executed. While not a perfect solution, \texttt{pysandbox}\footnote{https://pypi.python.org/pypi/pysandbox/} offers a reasonable level of protection against undesirable side-effects provided the code has not been malicious written so as to intentionally subvert the sandbox's constraints. 
+
 
 \section{Evaluation}
 
@@ -99,7 +105,7 @@ In the literature, many genetic programming approaches are evaluated using gramm
 
 While, often, genetic programming is used to generate code from scratch, recent work has successfully applied genetic programming to the automated repair of pre-existing programs \cite{weimer2009}. As in this case manipulation is done on the program's AST, this task would be an ideal evaluative measure for the proposed genetic programming system. Although prior work in this domain has been evaluated on snapshots of open source software during instances in which the software failed to pass a suite of automated tests, given the scope of this project, evaluation will instead either be performed on test-compliant software which has had bugs deliberately introduced through random AST mutation, or on hand-written examples, dependent on the feasibility of the former given the project's time constraints.
 
-The primary means of evaluating the proposed genetic programming system will be demonstrating how many (if any) software repair tasks it is able to solve. Time permitting, the system's performance, both in terms of number of solutions found and speed with which solutions are identified, will be compared against a baseline genetic programming system which does not incorporate an initial language model as induced using the Python corpus.
+The primary means of evaluating the proposed genetic programming system will be demonstrating how many (if any) software repair tasks it is able to solve. Time permitting, the system's performance, both in terms of number of solutions found and speed with which solutions are identified, will be compared against a baseline genetic programming system which does not incorporate an initial language model as induced using the Python corpus. A small-scale qualitative analysis of the naturalness or idiomaticity of code produced by both systems would also be possible.
 
 
 \section{Timeline}
