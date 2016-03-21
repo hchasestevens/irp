@@ -59,6 +59,10 @@
 
 \section{Introduction} \label{sec:intro}
 
+In the field of genetic programming, much research has been devoted to the invention and application of novel techniques for limiting the search space of genetic programming systems and directing systems' search through this space. The project outlined in this proposal will investigate and evaluate one such technique which, to the best of my knowledge, has not appeared in the literature previously. Specifically, this project will attempt to establish a prior probability distribution over potential solutions and use this distribution to inform the genetic programming system's search. To do so, I propose the application of language modeling techniques from the domain of natural language processing to source code. 
+
+If successful, the project will establish not only whether the incorporation of a prior language model into a genetic programming system is feasible and capable of finding adequate solutions to standard tasks, but also evaluate the quality of these solutions and speed with which they are found against a baseline genetic programming system. Further to this, the project will incidentally produce a large corpus of Python source code and a language model over this source code, both of which are of potential value to future work. 
+
 \section{Background and related work} \label{sec:back}
 
 \subsection{Application of language modeling to formal languages}
@@ -78,7 +82,7 @@ While much work has been done on modeling programming languages through the use 
 
 When considered as sequences of tokens, programming languages are purported to contain less information per token than natural languages \cite{hindle2012}. For example, under a trigram model, Java source code has an estimated average per-token cross-entropy of 4.9 bits \cite{allamanis2013}, compared to an estimated cross-entropy value of nearly 8 bits per word in English \cite{brown1992}. However, despite this,  an individual node in an AST can provide relatively little semantic information or information about non-children descendant nodes within the tree, easily allowing for the generation of unrunnable programs. Consider the example presented in \autoref{fig:1}, from which it can be clearly seen that a Call node in Python's AST contains no information about e.g. the types of the arguments with which the specified function is to be called. In order to combat this problem and encourage the generation of valid Python code, I plan to annotate AST nodes with variables learned through expectation maximization (EM), an unsupervised technique which has been shown to reduce perplexity measurements of probabilistic grammars over natural languages without the need for careful manual feature selection \cite{matsuzaki2005} \cite{petrov2006}.
 
-Since EM as an optimization technique is not guaranteed to converge on a global optimum and relies on randomized initializations which have demonstrable effects on the quality of the final grammar obtained \cite{matsuzaki2005}, I plan to generate several candidate probabilistic grammars using EM, as well as probabilistic grammar without annotations for comparison. Considering that cursory initial investigation suggests that several thousand Python projects on GitHub will meet the proposed criteria for inclusion in the aforementioned source code corpus, generating these language models might prove to be quite computationally intensive. Ideally, I would like to make use of a Hadoop cluster to distribute and parallelize the creation of each language model, thereby reducing overall time spent in model creation. Failing this, an alternative would be to sample a small subset of the corpus for use in training the language models, however, as corpus size has been shown to greatly impact language model efficacy \citep{allamanis2013}, I would be reticent to pursue this course of action.
+Since EM as an optimization technique is not guaranteed to converge on a global optimum and relies on randomized initializations which have demonstrable effects on the quality of the final grammar obtained \cite{matsuzaki2005}, I plan to generate several candidate probabilistic grammars using EM, as well as probabilistic grammar without annotations for comparison. Considering that cursory initial investigation suggests that several thousand Python projects on GitHub will meet the proposed criteria for inclusion in the aforementioned source code corpus, generating these language models might prove to be quite computationally intensive. I therefore plan to make use of the University's Hadoop cluster in order to distribute and parallelize the creation of each language model, thereby reducing overall time spent in model creation. Should this prove an inadequate solution to processing the corpus, an alternative would be to sample a small subset of the corpus for use in training the language models; however, as corpus size has been shown to greatly impact language model efficacy \citep{allamanis2013}, I would be reticent to pursue this course of action.
 
 \begin{figure}
 \qtreecenterfalse
@@ -109,8 +113,30 @@ The primary means of evaluating the proposed genetic programming system will be 
 
 
 \section{Timeline}
+\autoref{table:1} outlines the rough proposed timeline for this project, with corresponding artifacts expected to be generated. A buffer of 3 weeks between the final task's estimated completion date and the dissertation deadline is included, in the event that the completion one or more components exceeds its time allocation.
 
-\section{Conclusions}
+
+\begin{table}[h!]
+\begin{center}
+    \begin{tabular}{ l l l l }
+    \textbf{Date} & \textbf{Milestone} & \textbf{Associated artifact} & \textbf{Time allocated} \\ \hline
+    2/6/2016  & Project start date & - & N/A \\ \hline
+    6/6/2016  & Compile corpus & Python corpus & 3 days \\ \hline
+    17/6/2016 & Complete language modeling & Language models & 9 days \\ \hline
+    24/6/2016 & Evaluate language models & - & 5 days \\  \hline
+    8/7/2016 & Implement GP system & GP system & 10 days \\  \hline
+    15/7/2016 & Compile evaluation tasks & - & 5 days\\  \hline
+    29/7/2016 & Evaluate GP system & - & 10 days \\  \hline
+    19/8/2016 & Dissertation deadline & Dissertation & N/A\footnotemark  \\  \hline
+    \end{tabular}
+    \caption{Proposed timeline of events. Time allocations are given in working days.}
+    \label{table:1}
+\end{center}
+\end{table}
+\footnotetext{The dissertation will be written incrementally throughout the duration of the MSc. project.}
+
+\section{Conclusion}
+This proposal has outlined a project which will incorporate three novel contributions: the compilation of a large Python source code corpus, the creation of a language model for Python as trained on this corpus, and a genetic programming system which uses this language model to direct its search. This proposal has also presented a task from the literature -- program repair -- suitable for evaluating the system to be created, on which the system, as equipped with the language model, is expected to perform better than a baseline genetic programming system.
 
 \newpage
 \bibliographystyle{IEEEtran}
