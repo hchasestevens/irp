@@ -6,7 +6,7 @@
 \usepackage{amsmath, amsthm}
 \usepackage{amssymb}
 \usepackage{textcomp}
-\usepackage[olditem]{paralist}
+%\usepackage[olditem]{paralist}
 \usepackage{epsfig}
 \usepackage{qtree}
 
@@ -56,6 +56,7 @@
 
 \setlength{\parskip}{1ex} 
 
+\abstract{This paper serves as a proposal for a project to build and evaluate a genetic programming system which bases its initial search strategy on a large corpus of source code. The project, as outlined, will compile a large Python corpus and learn a statistical language model over this, which will then be incorporated into the genetic programming system. This paper also suggests the problem of automated program repair as a suitable evaluation task for the genetic programming system to be created.}
 
 \section{Introduction} \label{sec:intro}
 
@@ -63,11 +64,44 @@ In the field of genetic programming, much research has been devoted to the inven
 
 If successful, the project will establish not only whether the incorporation of a prior language model into a genetic programming system is feasible and capable of finding adequate solutions to standard tasks, but also evaluate the quality of these solutions and speed with which they are found against a baseline genetic programming system. Further to this, the project will incidentally produce a large corpus of Python source code and a language model over this source code, both of which are of potential value to future work. 
 
+\section{Aim and objectives}
+
+The aim of the project proposed in this paper will be to determine the feasibility and possible benefits of incorporating statistical language models into genetic programming systems. In order to accomplish this, the project will entail accomplishing the following objectives:
+
+\begin{enumerate}
+\item Compiling a corpus of Python source code
+\item Selecting a language modeling technique and applying it to this corpus
+\item Evaluating the language model against some baseline measure
+\item Creating a genetic programming system that incorporates the language model into its search strategy
+\item Applying this system to a suitable genetic programming task
+\end{enumerate}
+
+Additionally, time permitting, the project would benefit greatly from the accomplishment of an additional objective, namely:
+
+\begin{enumerate}
+
+\setcounter{enumi}{5}
+\item Evaluating the system against a baseline genetic programming system which does not incorporate the language model.
+
+\end{enumerate}
+
 \section{Background and related work} \label{sec:back}
 
 \subsection{Application of language modeling to formal languages}
 
+The application of statistical language modeling techniques to source code as adopted from the field of natural language processing is a relatively recent development in the literature. Seminal work presented in Hindle et al. (2012) \cite{hindle2012} applied trigram models to Java in order to establish an upper bound for the language's informational content. The authors were also able to leverage this model to produce a tool for next token prediction, with a great deal of success. Further research has shown that these models become even more effective when trained on larger corpora \cite{allamanis2013}.
+
+Subsequent work has expanded beyond modeling source code as sequences of tokens and utilized more sophisticated techniques to create more powerful models. Context-free grammars, for instance, have been used in identifying and coding idioms \cite{allamanis2014} and in automatically suggesting code fixes from previous source repository history \cite{bomersbach2014}.
+
+
 \subsection{Genetic programming}
+
+In the most abstract sense, genetic programming is an iterative technique for creating, selecting, and recombining tree-like structures in order to maximize some objective function \cite{poli2008field}. Typically, these structures are executable programs, in which each node is representative of some function and each leaf of some input or fixed value. Unlike other evolutionary computation paradigms such as genetic algorithms, in which solutions are represented as fixed-size genomes, genetic programming often deals with conceptually unbounded structures, resulting in an ill-defined and potentially infinite search space \cite{shan2006}. It's for this reason that, in practice, measures must be taken to partition or bound the search space into feasible and infeasible solutions and to correctly and effectively direct the genetic programming system's search through the space of feasible solutions.
+
+One such method for accomplishing this is via the enforcement of relationships between parent and child nodes in the tree. This is known as ``strongly-typed genetic programming" \cite{montana1995}. By implementing a strongly-typed genetic programming system, one can ensure that certain classes of run-time exceptions will not occur when evaluating a solution by certifying that values having the wrong type are not passed to functions. However, one drawback to this approach is that type specifications for each function and value used by the system must be (normally manually) specified, as opposed to more lenient genetic programming approaches in which only function arity is typically specified. 
+
+An alternative method for both avoiding run-time exceptions and guiding genetic programming system search is the use of probabilistic grammars. When determining each potential solution's fitness with regards to the objective function, relationships between pairs of nodes in the most successful solutions can be observed and used to learn probability distributions \cite{poli2008field}. This technique is capable of supplementing the implicit grammars defined within strongly-typed genetic programming system \cite{ratle2001} \cite{whigham1995}, but can also augment this grammar \cite{whigham1995inductive} or induce grammars in an entirely unsupervised fashion \cite{tanev2004}.
+
 
 \section{Methodology} \label{sec:disc}
 
@@ -113,10 +147,7 @@ The primary means of evaluating the proposed genetic programming system will be 
 
 
 \section{Timeline}
-\autoref{table:1} outlines the rough proposed timeline for this project, with corresponding artifacts expected to be generated. A buffer of 3 weeks between the final task's estimated completion date and the dissertation deadline is included, in the event that the completion one or more components exceeds its time allocation.
-
-
-\begin{table}[h!]
+\begin{table}
 \begin{center}
     \begin{tabular}{ l l l l }
     \textbf{Date} & \textbf{Milestone} & \textbf{Associated artifact} & \textbf{Time allocated} \\ \hline
@@ -133,10 +164,14 @@ The primary means of evaluating the proposed genetic programming system will be 
     \label{table:1}
 \end{center}
 \end{table}
-\footnotetext{The dissertation will be written incrementally throughout the duration of the MSc. project.}
+
+
+\autoref{table:1} outlines the rough proposed timeline for this project, with corresponding artifacts expected to be generated. A buffer of 3 weeks between the final task's estimated completion date and the dissertation deadline is included, in the event that the completion one or more components exceeds its time allocation.
 
 \section{Conclusion}
 This proposal has outlined a project which will incorporate three novel contributions: the compilation of a large Python source code corpus, the creation of a language model for Python as trained on this corpus, and a genetic programming system which uses this language model to direct its search. This proposal has also presented a task from the literature -- program repair -- suitable for evaluating the system to be created, on which the system, as equipped with the language model, is expected to perform better than a baseline genetic programming system.
+
+\footnotetext{The dissertation will be written incrementally throughout the duration of the M.Sc. project.}
 
 \newpage
 \bibliographystyle{IEEEtran}
